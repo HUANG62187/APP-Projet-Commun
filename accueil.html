@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>SmartClass - Accueil</title>
+  <link rel="stylesheet" href="accueil.css">
+</head>
+<body>
+
+  <header>
+    <nav>
+      <div class="logo">Smart<span>Class</span></div>
+      <ul>
+        <li><a href="#" class="active">Accueil</a></li>
+        <li><a href="connexion.php"> Capteurs </a></li>
+        <li><a href="capteurs.php"> Données</a></li>
+        <li><a href="donnees.php"> Connexion</a></li>  
+      </ul>
+    </nav>
+    
+    <!-- CARROUSEL D'IMAGES -->
+    <div class="carousel-container">
+      <div class="carousel-track">
+        
+        <div class="carousel-slide" id="slide-1">
+          <img src="image1.jpg" alt="premiere photo">
+          <div class="carousel-caption">
+            <h1></h1>
+            <a href="#histoire" class="btn">Voir plus</a>
+          </div>
+        </div>
+
+        <div class="carousel-slide" id="slide-2">
+          <img src="image2.jpeg" alt="Capteur de température et de présence">
+           <div class="carousel-caption">
+            <h2></h2>
+            <p></p>
+          </div>
+        </div>
+
+        <div class="carousel-slide" id="slide-3">
+          <img src="image3.jpeg" alt="Actionneur de volet automatisé">
+          <div class="carousel-caption">
+            <h2></h2>
+            <p></p>
+          </div>
+        </div>
+
+      </div>
+      <div class="carousel-nav">
+        <a href="#slide-1"></a>
+        <a href="#slide-2"></a>
+        <a href="#slide-3"></a>
+      </div>
+    </div>
+    <!-- FIN DU CARROUSEL -->
+
+  </header>
+
+  <section id="histoire">
+    <h2>Notre projet</h2>
+    <p>
+      <strong>SmartClass</strong> est un projet éco-conçu visant à améliorer le confort et l’efficacité énergétique des salles de cours. Grâce à des capteurs de température et de présence, et à des actionneurs comme des volets ou lumières, notre système s’adapte automatiquement aux besoins de la pièce.
+    </p>
+  </section>
+
+  <section class="galerie">
+    <div class="card">
+      <img src="capteur.jpg" alt="Capteur de température">
+      <p>Capteur de température – Équipe 2</p>
+    </div>
+    <div class="card">
+      <img src="volet.jpg" alt="Actionneur de volet">
+      <p>Actionneur de volet – Équipe 3</p>
+    </div>
+  </section>
+
+  <section class="mission">
+    <p>
+      Le site permet de visualiser les données des capteurs et de piloter les actionneurs en temps réel, tout en limitant l’impact environnemental grâce à un design sobre, accessible et économe en ressources.
+    </p>
+    <a href="capteurs.php" class="btn">Explorer</a>
+  </section>
+
+  <footer>
+    <div class="footer-left">
+      <p><strong>SmartClass</strong><br>Projet commun ISEP</p>
+    </div>
+    <div class="footer-center">
+      <p>Contact : smartclass@isep.fr<br>Serveur hébergé à l’ISEP</p>
+    </div>
+    <div class="footer-right">
+      <p>Mentions légales – Réalisé par l’équipe projet</p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const track = document.querySelector('.carousel-track');
+      const slides = Array.from(track.children);
+      const navDots = Array.from(document.querySelectorAll('.carousel-nav a'));
+      const slideCount = slides.length;
+      let slideWidth = slideCount > 0 ? slides[0].getBoundingClientRect().width : 0;
+      let currentSlide = 0;
+      let slideInterval;
+
+      test
+
+      // Function to move to a specific slide
+      const moveToSlide = (targetIndex) => {
+        if (!track || slideWidth === 0) return;
+        track.style.transform = `translateX(-${slideWidth * targetIndex}px)`;
+        currentSlide = targetIndex;
+
+        // Update active dot
+        navDots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === targetIndex);
+        });
+      };
+
+      // Function to show the next slide
+      const showNextSlide = () => {
+        const nextSlideIndex = (currentSlide + 1) % slideCount;
+        moveToSlide(nextSlideIndex);
+      };
+
+      // Function to start the autoplay
+      const startAutoplay = () => {
+        clearInterval(slideInterval); // Clear any existing interval
+        slideInterval = setInterval(showNextSlide, 4000); // Change slide every 4 seconds
+      };
+      
+      // Add click event listeners to nav dots
+      navDots.forEach((dot, index) => {
+        dot.addEventListener('click', (e) => {
+          e.preventDefault(); // Stop the default anchor link behavior
+          moveToSlide(index);
+          startAutoplay(); // Reset the interval timer
+        });
+      });
+      
+      // Handle window resizing to keep the carousel working correctly
+      window.addEventListener('resize', () => {
+        slideWidth = slideCount > 0 ? slides[0].getBoundingClientRect().width : 0;
+        track.style.transition = 'none'; // Disable transition during resize
+        moveToSlide(currentSlide);
+        // Use a timeout to re-enable the transition after the resize has been handled
+        setTimeout(() => {
+          track.style.transition = 'transform 0.5s ease-in-out';
+        });
+      });
+
+      // Initialize the carousel
+      if (slideCount > 0) {
+        moveToSlide(0);
+        startAutoplay();
+      }
+    });
+  </script>
+
+</body>
+</html>
