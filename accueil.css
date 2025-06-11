@@ -1,4 +1,4 @@
-/* Couleurs écologiques */
+/* Couleurs ecologiques */
 :root {
   --green: #345a83;
   --green-dark: #345a83;
@@ -6,6 +6,7 @@
   --background: #f6f6f6;
   --text: #333333;
   --accent: #1E88E5;
+  --hover-yellow: #FFD700;
 }
 
 body {
@@ -15,37 +16,117 @@ body {
   background-color: var(--background);
 }
 
+/* --- MODIFICATIONS DU HEADER --- */
 nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   background: var(--green);
-  padding: 1em;
   color: white;
+  padding: 0.75em 0;
 }
 
-nav .logo {
-  font-weight: bold;
-  font-size: 1.5em;
+/* Le conteneur prend maintenant toute la largeur */
+.nav-container {
+  display: flex;
+  justify-content: space-between; /* Place les elements aux extremites */
+  align-items: center;
+  width: 100%;
+  padding: 0 20px; /* Espace sur les cotes pour ne pas coller au bord de l'ecran */
+  box-sizing: border-box; /* Pour que le padding soit inclus dans la largeur de 100% */
 }
 
-nav .logo span {
-  color: #C8E6C9;
+/* --- STYLE POUR LE LOGO IMAGE A GAUCHE --- */
+nav .logo img {
+  height: 80px; 
+  display: block;
 }
 
+/* --- LIENS DE NAVIGATION AU CENTRE (SUR GRAND ECRAN) --- */
 nav ul {
+  /* La magie est ici : */
+  flex-grow: 1; /* Permet a la liste de liens de prendre tout l'espace disponible */
+  justify-content: center; /* Centre les liens a l'interieur de cet espace */
+  
   display: flex;
   list-style: none;
-  gap: 1em;
+  gap: 2em; /* On peut augmenter un peu l'ecart */
+  margin: 0;
+  padding: 0;
 }
 
 nav ul li a {
   color: white;
   text-decoration: none;
+  padding-bottom: 5px; 
+  transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+  color: var(--hover-yellow);
 }
 
 nav ul li a.active {
-  border-bottom: 2px solid #C8E6C9;
+  border-bottom: 1px solid white;
+}
+
+
+/* --- STYLE POUR LE BOUTON HAMBURGER --- */
+#hamburger-btn {
+  display: none;
+}
+
+/* --- MEDIA QUERY POUR LE DESIGN RESPONSIVE (PETITS ECRANS) --- */
+@media (max-width: 768px) {
+  .nav-container {
+      flex-wrap: wrap;
+  }
+
+  #hamburger-btn {
+    display: flex; /* Affiche le bouton */
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 25px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+  
+  #hamburger-btn .bar {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background-color: white;
+    border-radius: 2px;
+  }
+
+  nav ul {
+    display: none; /* Cache le menu par defaut */
+    flex-grow: 0; /* On annule la croissance sur mobile */
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+    gap: 0;
+    margin-top: 1em;
+    order: 3; /* Place le menu en dernier, en dessous du logo et du hamburger */
+  }
+
+  nav ul.show {
+    display: flex; /* Affiche le menu quand on clique sur le bouton */
+  }
+
+  nav ul li a {
+    display: block;
+    padding: 1em;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  nav ul li a.active {
+     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  nav ul li:last-child a {
+    border-bottom: none;
+  }
 }
 
 .btn {
@@ -101,24 +182,24 @@ footer {
   justify-content: space-around;
   font-size: 0.9em;
   border-top: 2px solid var(--green);
+  flex-wrap: wrap;
+  gap: 15px;
 }
-
-/* --- STYLES POUR LE CARROUSEL --- */
 
 .carousel-container {
   position: relative;
   width: 100%;
-  max-height: 500px; /* Hauteur maximale du carrousel */
-  overflow: hidden; /* Cache les images qui dépassent */
+  max-height: 500px;
+  overflow: hidden;
 }
 
 .carousel-track {
   display: flex;
-  transition: transform 0.5s ease-in-out; /* Add a smooth transition for the slide movement */
+  transition: transform 0.5s ease-in-out;
 }
 
 .carousel-slide {
-  flex: 0 0 100%; /* Chaque slide prend 100% de la largeur du conteneur */
+  flex: 0 0 100%;
   width: 100%;
   position: relative;
   text-align: center;
@@ -127,12 +208,10 @@ footer {
 .carousel-slide img {
   width: 100%;
   height: 500px;
-  object-fit: cover; /* Assure que l'image couvre la zone sans se déformer */
+  object-fit: cover;
   display: block;
 }
 
-
-/* Cache le bandeau et le texte sur les images */
 .carousel-caption {
   display: none;
 }
@@ -149,7 +228,6 @@ footer {
   margin-top: 10px;
 }
 
-/* --- NAVIGATION DU CARROUSEL (LES PETITS POINTS) --- */
 .carousel-nav {
   position: absolute;
   bottom: 20px;
@@ -173,8 +251,7 @@ footer {
   opacity: 1;
 }
 
-/* Style for the active navigation dot */
 .carousel-nav a.active {
   opacity: 1;
-  background-color: var(--accent); /* Use an accent color for the active dot */
+  background-color: var(--accent);
 }

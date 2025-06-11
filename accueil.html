@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SmartClass - Accueil</title>
   <link rel="stylesheet" href="accueil.css">
 </head>
@@ -9,13 +10,30 @@
 
   <header>
     <nav>
-      <div class="logo">Smart<span>Class</span></div>
-      <ul>
-        <li><a href="#" class="active">Accueil</a></li>
-        <li><a href="connexion.php"> Capteurs </a></li>
-        <li><a href="capteurs.php"> Données</a></li>
-        <li><a href="donnees.php"> Connexion</a></li>  
-      </ul>
+      <!-- Le conteneur s'etendra sur toute la largeur maintenant -->
+      <div class="nav-container">
+
+        <!-- Le logo a gauche -->
+        <div class="logo">
+          <a href="#"><img src="logo.png" alt="Logo SmartClass"></a>
+        </div>
+
+        <!-- Les liens de navigation qui vont occuper le centre -->
+        <ul id="nav-links">
+          <li><a href="#" class="active">Accueil</a></li>
+          <li><a href="connexion.php"> Gestion des capteurs</a></li>
+          <li><a href="capteurs.php"> Gestion des données</a></li>
+          <li><a href="donnees.php">Connexion</a></li>  
+        </ul>
+
+        <!-- Le bouton hamburger, qui n'apparaitra qu'a droite sur mobile -->
+        <button id="hamburger-btn" aria-label="Ouvrir le menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+
+      </div>
     </nav>
     
     <!-- CARROUSEL D'IMAGES -->
@@ -96,6 +114,13 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      const hamburgerBtn = document.getElementById('hamburger-btn');
+      const navLinks = document.getElementById('nav-links');
+
+      hamburgerBtn.addEventListener('click', () => {
+        navLinks.classList.toggle('show');
+      });
+
       const track = document.querySelector('.carousel-track');
       const slides = Array.from(track.children);
       const navDots = Array.from(document.querySelectorAll('.carousel-nav a'));
@@ -104,53 +129,42 @@
       let currentSlide = 0;
       let slideInterval;
 
-      test
-
-      // Function to move to a specific slide
       const moveToSlide = (targetIndex) => {
         if (!track || slideWidth === 0) return;
         track.style.transform = `translateX(-${slideWidth * targetIndex}px)`;
         currentSlide = targetIndex;
-
-        // Update active dot
         navDots.forEach((dot, index) => {
             dot.classList.toggle('active', index === targetIndex);
         });
       };
 
-      // Function to show the next slide
       const showNextSlide = () => {
         const nextSlideIndex = (currentSlide + 1) % slideCount;
         moveToSlide(nextSlideIndex);
       };
 
-      // Function to start the autoplay
       const startAutoplay = () => {
-        clearInterval(slideInterval); // Clear any existing interval
-        slideInterval = setInterval(showNextSlide, 4000); // Change slide every 4 seconds
+        clearInterval(slideInterval);
+        slideInterval = setInterval(showNextSlide, 4000);
       };
       
-      // Add click event listeners to nav dots
       navDots.forEach((dot, index) => {
         dot.addEventListener('click', (e) => {
-          e.preventDefault(); // Stop the default anchor link behavior
+          e.preventDefault();
           moveToSlide(index);
-          startAutoplay(); // Reset the interval timer
+          startAutoplay();
         });
       });
       
-      // Handle window resizing to keep the carousel working correctly
       window.addEventListener('resize', () => {
         slideWidth = slideCount > 0 ? slides[0].getBoundingClientRect().width : 0;
-        track.style.transition = 'none'; // Disable transition during resize
+        track.style.transition = 'none';
         moveToSlide(currentSlide);
-        // Use a timeout to re-enable the transition after the resize has been handled
         setTimeout(() => {
           track.style.transition = 'transform 0.5s ease-in-out';
         });
       });
 
-      // Initialize the carousel
       if (slideCount > 0) {
         moveToSlide(0);
         startAutoplay();
