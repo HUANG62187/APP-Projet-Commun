@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connexion – SmartClass</title>
+
+  <!-- Stylesheet from accueil page -->
+  <link rel="stylesheet" href="accueil.css">
+
+  <!-- Google Fonts & Font Awesome (kept from original login page) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <style>
+    /* Local variables and base styles */
+    :root{
+      /* Kept from original for form consistency */
+      --radius:.5rem;
+      --shadow:0 4px 10px rgba(0,0,0,.1);
+      --transition:.25s ease-in-out;
+    }
+    
+    /* Use Inter font for the form, while header/footer use Arial from accueil.css */
+    body {
+        font-family: 'Inter', sans-serif;
+    }
+
+    /* ======= Login Card ======= */
+    .login-container{
+        max-width:420px;
+        width:90%;
+        margin:4rem auto 2rem;
+        background: #fff;
+        padding:2.5rem;
+        border-radius:var(--radius);
+        box-shadow:var(--shadow);
+        text-align:center;
+    }
+    .login-container h1{
+        color:var(--green-dark); /* Color from accueil.css */
+        margin-bottom:1.5rem;
+        font-size:1.75rem;
+    }
+
+    /* Role buttons */
+    .user-type-selection{display:flex;justify-content:center;gap:.5rem;margin-bottom:1.5rem}
+    .user-type-button{
+        background: var(--green-dark); /* Blue background */
+        border: 2px solid var(--green-dark); /* Blue border */
+        color: #fff; /* White text */
+        padding:.35rem .85rem;
+        border-radius:var(--radius);
+        font-weight:600;
+        cursor:pointer;
+        transition:var(--transition);
+    }
+    .user-type-button:hover,
+    .user-type-button.active{
+        color: var(--hover-yellow); /* Yellow text on hover/active */
+    }
+    
+
+    /* Form */
+    form label{
+        display:block;
+        text-align:left;
+        font-weight:600;
+        margin-top:1rem;
+        color:var(--text); /* Color from accueil.css */
+    }
+    form input{
+        width:100%;
+        padding:.55rem .75rem;
+        margin-top:.35rem;
+        border:1px solid #ccc;
+        border-radius:var(--radius);
+    }
+    .login-buttons{
+        display:flex;
+        flex-wrap:wrap;
+        gap:.75rem;
+        justify-content:center;
+        margin-top:1.5rem;
+    }
+    /* Make form buttons use the theme color and override accueil.css .btn style */
+    .login-buttons .btn{
+        background:var(--green-dark);
+        color:#fff;
+        padding:.5rem 1rem;
+        border:none;
+        border-radius:var(--radius);
+        font-weight:600;
+        cursor:pointer;
+        transition:var(--transition);
+        margin-top: 0; /* Reset margin from accueil.css .btn */
+        display: inline-flex; /* Fix for alignment */
+        align-items: center;
+    }
+    .login-buttons .btn:hover{
+        color: var(--hover-yellow); /* MODIFICATION APPLIQUÉE ICI */
+    }
+    .error-message{color:crimson;font-weight:600;margin-bottom:.75rem}
+
+  </style>
+</head>
+<body>
+
+<!-- ===== Header from accueil.html ===== -->
+<header>
+    <nav>
+      <div class="nav-container">
+
+        <div class="logo">
+          <a href="accueil.html"><img src="logo.png" alt="Logo SmartClass"></a>
+        </div>
+
+        <ul id="nav-links">
+            <li><a href="accueil.html" class="active">Accueil</a></li>
+            <li><a href="connexion.php"> Gestion des capteurs</a></li>
+            <li><a href="capteurs.php"> Gestion des onnées</a></li>
+            <li><a href="connexion.html">Inscription</a></li> 
+            <li><a href="login.html">Connexion</a></li> 
+        </ul>
+
+        <button id="hamburger-btn" aria-label="Ouvrir le menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+
+      </div>
+    </nav>
+</header>
+
+<!-- ===== Login Card (structure and functionality unchanged) ===== -->
+<div class="login-container">
+  <h1>Connexion au compte</h1>
+  <p id="error" class="error-message" style="display:none;">Tous les champs sont obligatoires.</p>
+
+  <div class="user-type-selection">
+    <button id="user-btn"  class="user-type-button active" onclick="selectRole('utilisateur')">Utilisateur</button>
+    <button id="admin-btn" class="user-type-button"        onclick="selectRole('administrateur')">Administrateur</button>
+  </div>
+
+  <form onsubmit="return fakeSubmit(event)">
+    <input type="hidden" id="role" name="role" value="utilisateur">
+
+    <label for="email">Adresse mail</label>
+    <input type="email" id="email" name="email" placeholder="Votre adresse email" required>
+
+    <label for="password">Mot de passe</label>
+    <input type="password" id="password" name="password" placeholder="Votre mot de passe" required>
+
+    <div class="login-buttons">
+      <button type="submit" class="btn">Confirmer</button>
+      <a href="inscription.html" class="btn">Inscription</a>
+      <a href="#" class="btn">Mot de passe oublié ?</a>
+    </div>
+  </form>
+</div>
+
+<!-- ===== Footer from accueil.html ===== -->
+<footer>
+    <div class="footer-left">
+      <p><strong>SmartClass</strong><br>Projet commun ISEP</p>
+    </div>
+    <div class="footer-center">
+      <p>Contact : smartclass@isep.fr<br>Serveur hébergé à l’ISEP</p>
+    </div>
+    <div class="footer-right">
+      <p>Mentions légales – Réalisé par l’équipe projet</p>
+    </div>
+</footer>
+
+<script>
+  // --- Scripts for the form (unchanged) ---
+  function selectRole(role){
+    document.getElementById('role').value = role;
+    document.getElementById('user-btn').classList.toggle('active',  role==='utilisateur');
+    document.getElementById('admin-btn').classList.toggle('active', role==='administrateur');
+  }
+
+  function fakeSubmit(e){
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    const pwd   = document.getElementById('password').value.trim();
+    const errEl = document.getElementById('error');
+    if(!email || !pwd){
+      errEl.style.display = 'block';
+    }else{
+      errEl.style.display = 'none';
+      alert('Connexion simulée : rôle = ' + document.getElementById('role').value);
+    }
+    return false;
+  }
+
+  // --- Script for the header hamburger menu (from accueil.html) ---
+  document.addEventListener('DOMContentLoaded', function() {
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const navLinks = document.getElementById('nav-links');
+
+    if (hamburgerBtn && navLinks) {
+        hamburgerBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
+    }
+  });
+</script>
+
+</body>
+</html>
